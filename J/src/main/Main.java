@@ -21,7 +21,7 @@ public class Main {
 	static int[] bufferExtrm = new int[100000];
 
 	public static void main(String[] args) throws IOException {
-		in = new MyReader(new File("in.txt"));
+		in = new MyReader(new File("in0.txt"));
 //		out = new PrintStream("out1.txt");
 //		long ms = System.currentTimeMillis();
 		int t = in.nextInt();
@@ -83,13 +83,13 @@ public class Main {
 		PointComparable cmp = makeComparator(ex, ey);
 		quickSort(xy, ptr, blen, n-1, cmp);
 		
-		System.out.println("sorted: " + join(" ", ptr));
+//		System.out.println("sorted: " + join(" ", ptr));
 		
 
-		for (int i = 0; i < n; i++) {
-			out.println(ptr[i] + ") " + xy[0][ptr[i]] + " " + xy[1][ptr[i]]);
-		}
-		out.println("---------");
+//		for (int i = 0; i < n; i++) {
+//			out.println(ptr[i] + ") " + xy[0][ptr[i]] + " " + xy[1][ptr[i]]);
+//		}
+//		out.println("---------");
 		
 
 		List<Integer> set = new ArrayList<>();
@@ -100,8 +100,6 @@ public class Main {
 		for (int i = blen+1; i < ptr.length; i++) {
 			int prev = set.get(set.size()-1);
 			if (xy[0][ptr[i]] == xy[0][ptr[prev]] && xy[1][ptr[i]] == xy[1][ptr[prev]]){
-//				System.out.println("skipped " + i + " " + prev);
-//				System.out.println(ptr[prev] + " " + ptr[i]);
 				if (ptr[i] < ptr[prev]){
 					// quick sort isn't stable
 					int t = ptr[i];
@@ -111,33 +109,36 @@ public class Main {
 //				System.out.println("set: " + join(" ", set));
 				continue;  // skip the same point
 			}
+			
 //			System.out.println("i=" + i + " | " + xy[0][ptr[i]] + "," + xy[1][ptr[i]] + " | " + xy[0][ptr[prev]] + "," + xy[1][ptr[prev]]);
+			// points on one line
 			if (rotate(xy[0][ptr[i]], xy[1][ptr[i]], xy[0][ptr[prev]], xy[1][ptr[prev]], xy[0][bufferExtrm[0]], xy[1][bufferExtrm[0]]) == 0)
 				continue;
 
-			int c = cmp.compare(xy[0][ptr[i]], xy[1][ptr[i]], xy[0][ptr[prev]], xy[1][ptr[prev]]);
-			if (c <= 0) throw new RuntimeException("incorrect sorting: rotate = " + c);
+//			int c = cmp.compare(xy[0][ptr[i]], xy[1][ptr[i]], xy[0][ptr[prev]], xy[1][ptr[prev]]);
+//			if (c <= 0) throw new RuntimeException("incorrect sorting: rotate = " + c);
 
-			System.out.print("[");
-			System.out.print(String.format("(%s %s) (%s %s) (%s %s)", xy[0][ptr[i]], xy[1][ptr[i]],
-					xy[0][ptr[set.get(set.size()-1)]], xy[1][ptr[set.get(set.size()-1)]],
-					xy[0][ptr[set.get(set.size()-2)]], xy[1][ptr[set.get(set.size()-2)]]));
-			System.out.println("]");
-			while (rotate(xy[0][ptr[i]], xy[1][ptr[i]],
-					xy[0][ptr[set.get(set.size()-1)]], xy[1][ptr[set.get(set.size()-1)]],
-					xy[0][ptr[set.get(set.size()-2)]], xy[1][ptr[set.get(set.size()-2)]]) > 0){
-				set.remove(set.size()-1);
-				System.out.print("ok: [");
-				System.out.print(String.format("(%s %s) (%s %s) (%s %s)", xy[0][ptr[i]], xy[1][ptr[i]],
-						xy[0][ptr[set.get(set.size()-1)]], xy[1][ptr[set.get(set.size()-1)]],
-						xy[0][ptr[set.get(set.size()-2)]], xy[1][ptr[set.get(set.size()-2)]]));
-				System.out.println("]");
-			}
-//			if (rotate(xy[0][ptr[i]], xy[1][ptr[i]],
+//			System.out.print("[");
+//			System.out.print(String.format("(%s %s) (%s %s) (%s %s)", xy[0][ptr[i]], xy[1][ptr[i]],
 //					xy[0][ptr[set.get(set.size()-1)]], xy[1][ptr[set.get(set.size()-1)]],
-//					xy[0][bufferExtrm[0]], xy[1][bufferExtrm[0]]) == 0) continue;
-			System.out.println("add: " + xy[0][ptr[i]] + " " + xy[1][ptr[i]]);
+//					xy[0][ptr[set.get(set.size()-2)]], xy[1][ptr[set.get(set.size()-2)]]));
+//			System.out.println("]");
+//			int r1 = rotate(xy, ptr[i], ptr[set.get(set.size()-1)], ptr[set.get(set.size()-2)]);
+//			int r2 = rotate(xy[0][ptr[i]], xy[1][ptr[i]],
+//					xy[0][ptr[set.get(set.size()-1)]], xy[1][ptr[set.get(set.size()-1)]],
+//					xy[0][ptr[set.get(set.size()-2)]], xy[1][ptr[set.get(set.size()-2)]]);
+//			if (r1 != r2) throw new RuntimeException("incorrect rotate");
+			while (rotate(xy, ptr[i], ptr[set.get(set.size()-1)], ptr[set.get(set.size()-2)]) >= 0){
+				set.remove(set.size()-1);
+//				System.out.print("ok: [");
+//				System.out.print(String.format("(%s %s) (%s %s) (%s %s)", xy[0][ptr[i]], xy[1][ptr[i]],
+//						xy[0][ptr[set.get(set.size()-1)]], xy[1][ptr[set.get(set.size()-1)]],
+//						xy[0][ptr[set.get(set.size()-2)]], xy[1][ptr[set.get(set.size()-2)]]));
+//				System.out.println("]");
+			}
+//			System.out.println("add: " + xy[0][ptr[i]] + " " + xy[1][ptr[i]]);
 			set.add(i);
+//			System.out.println();
 		}
 		
 //		System.out.println("---------");
@@ -155,15 +156,44 @@ public class Main {
 		}
 		
 		out.println(String.format(Locale.US, "%.2f", area));
-//		out.print(ptr[set.get(0)]+1);
-		for (int i = 0; i < set.size(); i++) {
+		out.print(ptr[set.get(0)]+1);
+		for (int i = 1; i < set.size(); i++) {
 			int s = set.get(i);
-//			out.print(" " + (ptr[s]+1));
-			out.println(s + ") " + (ptr[s]+1) + "| " + xy[0][ptr[s]] + " " + xy[1][ptr[s]]);
+			out.print(" " + (ptr[s]+1));
+//			out.println(s + ") " + (ptr[s]+1) + "| " + xy[0][ptr[s]] + " " + xy[1][ptr[s]]);
 		}
 		out.println();
 		out.println();
+
+		// testing
+//		for (int s : set) {
+//			out.println(xy[0][ptr[s]] + " " + xy[1][ptr[s]]);
+//		}
+		
+		
+//		checkRotate(xy, ptr, set);
 	}
+	
+	static void checkRotate(int[][] xy, int[] ptr, List<Integer> sorted){
+		int x = xy[0][ptr[sorted.get(0)]];
+		int y = xy[1][ptr[sorted.get(0)]];
+		int a = sorted.get(0);
+		int b = sorted.get(1);
+		for (int i = 2; i < sorted.size(); i++) {
+			int c = sorted.get(i);
+			int pa = ptr[a], pb = ptr[b], pc = ptr[c];
+			int r = rotate(xy, pa, pb, pc);
+			if (r <= 0) {
+				String s = String.format("%d wrong: (%d,%d),(%d,%d),(%d,%d)", i, xy[0][pa], xy[1][pa], xy[0][pb], xy[1][pb], xy[0][pc], xy[1][pc]);
+				System.out.println("Error " + r + ": " + x + " " + y);
+				System.out.println(s);
+			}
+			a = b;
+			b = c;
+		}
+	}
+	
+	
 	
 	static void quickSort(int[][] xy, int[] ptr, int s0, int e0, PointComparable cmp){
 		if (s0 >= e0) return;
@@ -201,11 +231,13 @@ public class Main {
 		quickSort(xy, ptr, s, e0, cmp);
 	}
 	
+	
 	static PointComparable makeComparator(final int x, final int y){
 		return (x1,y1,x2,y2) -> {
 			int res = rotate(x2, y2, x1, y1, x, y);
 			if (res != 0)
 				return res;
+//			return Integer.compare(Math.abs(x2-x)+Math.abs(y2-y), Math.abs(x1-x)+Math.abs(y1-y));
 			return Double.compare(getLength(x, y, x2, y2), getLength(x, y, x1, y1));
 		};
 	}
