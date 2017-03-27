@@ -1,5 +1,12 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -7,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -16,8 +24,18 @@ public class Main {
 	static final int COUNT = 2000000;
 	static Random r = new Random();
 
-	public static void main(String[] args) {
-		test2();
+	public static void main(String[] args) throws Exception {
+		test3();
+	}
+
+	private static void test3() throws IOException {
+//		DataInputStream d = new DataInputStream(new FileInputStream("in.txt"));
+		BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("in.txt")));
+		Scanner s = new Scanner(new FileInputStream("in.txt"));
+//		while (r.readLine() != null);
+		System.out.println(r.read());
+		System.out.println(r.read());
+		System.out.println("done");
 	}
 
 	private static void test2() {
