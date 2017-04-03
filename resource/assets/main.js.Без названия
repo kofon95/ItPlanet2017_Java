@@ -1,0 +1,12 @@
+var deadlineCallback = function(event) {
+  var days = event.offset.totalDays;
+  if (days == 0) {
+    $(this).text(event.strftime('%H:%M:%S'));
+  } else if (days == 1) {
+    $(this).text(event.strftime('%-D день %H:%M:%S'));
+  } else if (days > 1 && days < 5) {
+    $(this).text(event.strftime('%-D дня %H:%M:%S'));
+  } else {
+    $(this).text(event.strftime('%-D дней %H:%M:%S'));
+  }
+};

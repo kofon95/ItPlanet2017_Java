@@ -1,5 +1,3 @@
-package main;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -15,7 +13,7 @@ public class Main {
 	static PrintStream out = System.out;
 
 	public static void main(String[] args) throws IOException {
-		in = new Scanner(new File("in.txt"));
+//		in = new Scanner(new File("in.txt"));
 		int t = Integer.valueOf(in.nextLine());
 		while (t-- > 0) {
 			solve();
@@ -95,25 +93,14 @@ public class Main {
 	}
 	
 	static void printMax(List<String> results){
-		isValid(results.get(0));
 		String max = results.get(0);
 		for (int i = 1; i < results.size(); i++) {
 			String res = results.get(i);
-			isValid(res);
 			if (firstIsBigger(res, max)){
 				max = res;
 			}
 		}
 		out.println(max);
-	}
-	
-	static boolean isValid(String s){
-		int a = 0;
-		for (int i = 0; i < s.length(); i++) {
-			a += s.charAt(i) - '0';
-		}
-		if (a % 9 != 0) throw new RuntimeException("Wrong");
-		return true;
 	}
 
 	private static boolean firstIsBigger(String first, String second) {
@@ -138,7 +125,7 @@ public class Main {
 				continue;
 			}
 			inx = tinx;
-			if (--kk < 0) break;
+			kk--;
 			num = nums.get(p);
 //			System.out.println(num);
 			res.add(num);
@@ -146,18 +133,10 @@ public class Main {
 		if (res.size() != k){
 			res.add(nums.get(nums.size()-1));
 		}
-		if (res.size() != k) throw new RuntimeException();
 //		out.println("------\n");
 		StringBuffer sb = new StringBuffer();
 		for (int j = k-1; j >= 0; j--) {
 			sb.append(res.get(j));
-		}
-		int max = res.get(0);
-		for (int j = 1; j < res.size(); j++) {
-			if (max > res.get(0)) {
-				throw new RuntimeException("wrong sort");
-			}
-			max = res.get(0);
 		}
 		return sb.toString();
 	}
