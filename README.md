@@ -1,4 +1,4 @@
-It Planet Java Context
+It Planet Java Contest
 =============
 
 ## The repository contains solutions as well as tasks in **.html** format.
